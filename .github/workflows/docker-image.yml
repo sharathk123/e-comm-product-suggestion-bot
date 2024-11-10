@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build, Pull Docker Image, and Deploy to Render
 
 on:
   push:
@@ -34,3 +34,26 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/ecomm:latest
+      
+      # Pull the Docker image from Docker Hub
+      - name: Pull Docker image from Docker Hub
+        run: |
+          docker pull docker.io/sharathk123/ecomm:latest
+
+      # Stop Render Service (using Render API)
+      - name: Stop Render Service
+        uses: peter-evans/http-request-action@v2
+        with:
+          url: https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/stop
+          method: POST
+          headers: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
+          body: '{}'
+
+      # Trigger Render deployment to restart the service (using Render API)
+      - name: Trigger Render deployment
+        uses: peter-evans/http-request-action@v2
+        with:
+          url: https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
+          method: POST
+          headers: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
+          body: '{}'
