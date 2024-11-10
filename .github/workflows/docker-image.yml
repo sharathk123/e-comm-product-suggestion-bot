@@ -39,16 +39,7 @@ jobs:
       - name: Pull Docker image from Docker Hub
         run: |
           docker pull docker.io/sharathk123/ecomm:latest
-
-      # Stop Render Service (using Render API)
-      - name: Stop Render Service
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/stop'
-          method: 'POST'
-          customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
-          data: '{}'
-      
+ 
       # Trigger Render Deploy Hook
         - name: Trigger Render Deploy
           uses: fjogeleit/http-request-action@v1
