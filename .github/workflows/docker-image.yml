@@ -41,8 +41,8 @@ jobs:
           docker pull docker.io/sharathk123/ecomm:latest
  
       # Trigger Render Deploy Hook
-        - name: Trigger Render Deploy
-          uses: fjogeleit/http-request-action@v1
-          with:
-            url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-            method: 'GET'
+      - name: Trigger Render Deploy
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          method: 'GET'
