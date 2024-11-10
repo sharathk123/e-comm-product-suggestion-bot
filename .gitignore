@@ -1,5 +1,6 @@
 venv
 .env
+e_comm_product_suggetion_bot.egg-info
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
