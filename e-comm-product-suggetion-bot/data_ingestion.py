@@ -33,7 +33,7 @@ def validate_env_variables():
     else:
         logger.info("All required environment variables are set.")
 
-# Extracted method to initialize embeddings
+# Initialize embeddings with explicit fallbacks
 def initialize_embeddings():
     embedding_hf = None
     embedding_oai = None
@@ -45,26 +45,31 @@ def initialize_embeddings():
     except Exception as e:
         logger.error(f"Error initializing HuggingFace embeddings: {e}")
 
-    # Try loading OpenAI embeddings
+    # Try loading OpenAI embeddings if HuggingFace fails
     try:
         embedding_oai = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY"))
         logger.info("OpenAI embeddings initialized successfully.")
     except Exception as e:
         logger.error(f"Error initializing OpenAI embeddings: {e}")
 
-    if embedding_oai is None:
-        raise ValueError("Embedding model not properly initialized.")
+    if embedding_oai is None and embedding_hf is None:
+        logger.error("No embedding models could be initialized.")
+        raise ValueError("Embedding models are required for vector store.")
 
-    return embedding_hf, embedding_oai
+    # Default to OpenAI if HuggingFace initialization failed
+    if embedding_oai is None:
+        embedding_oai = embedding_hf
+
+    return embedding_oai
 
 # Create and configure the vector store, including embeddings and data ingestion
-def create_vector_store():
+def data_ingestion():
     # Ensure environment variables are loaded before using them
     load_env_variables()
     validate_env_variables()
 
     # Initialize embeddings
-    embedding_hf, embedding_oai = initialize_embeddings()
+    embedding_oai = initialize_embeddings()
 
     try:
         # Create AstraDB Vector Store
@@ -80,7 +85,7 @@ def create_vector_store():
         # Ingest data into the vector store
         docs = data_converter()  # Ensure this returns a list of Document objects
         if not docs:
-            logger.warning("No documents returned by data_converter.")
+            logger.warning("No documents returned by data_converter. Please check your data source.")
 
         # Add documents to the vector store
         insert_ids = vstore.add_documents(docs)
@@ -96,8 +101,11 @@ def create_vector_store():
 def search_vector_store(vstore, query):
     try:
         results = vstore.similarity_search(query)
-        for res in results:
-            logger.info(f"\n{res.page_content} [{res.metadata}]")
+        if results:
+            for res in results:
+                logger.info(f"\n{res.page_content} [{res.metadata}]")
+        else:
+            logger.info("No results found for the query.")
     except Exception as e:
         logger.error(f"Error during vector store search: {e}")
         raise  # Re-raise exception after logging
@@ -106,7 +114,7 @@ def search_vector_store(vstore, query):
 def main():
     try:
         # Create the vector store and ingest data
-        vstore, insert_ids = create_vector_store()
+        vstore, insert_ids = data_ingestion()
 
         # Perform a search on the vector store if documents were inserted
         if insert_ids:
