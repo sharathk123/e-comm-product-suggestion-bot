@@ -1,7 +1,7 @@
 import os 
 from pathlib import Path
 
-project_name = "e-comm-product-suggetion-bot"
+project_name = "ecomm"
 
 list_of_files = [
 

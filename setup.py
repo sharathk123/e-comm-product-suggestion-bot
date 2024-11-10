@@ -13,7 +13,7 @@ def get_requirements() -> List[str]:
     return requirement_list
 
 setup(
-    name = "e-comm-product-suggetion-bot",
+    name = "ecomm",
     version= "0.0.1",
     author="Sharath",
     author_email="sharath.babuk.@gmail.com",

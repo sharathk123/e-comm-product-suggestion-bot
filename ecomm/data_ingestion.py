@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_astradb import AstraDBVectorStore
-from data_converter import data_converter
+
+from ecomm.data_converter import data_converter
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -63,7 +65,7 @@ def initialize_embeddings():
     return embedding_oai
 
 # Create and configure the vector store, including embeddings and data ingestion
-def data_ingestion():
+def ingest_data():
     # Ensure environment variables are loaded before using them
     load_env_variables()
     validate_env_variables()
