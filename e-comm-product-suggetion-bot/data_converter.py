@@ -1,5 +1,5 @@
 import pandas as pd
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 def data_converter():
     # Load data and select necessary columns
