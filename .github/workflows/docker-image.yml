@@ -42,18 +42,18 @@ jobs:
 
       # Stop Render Service (using Render API)
       - name: Stop Render Service
-        uses: peter-evans/http-request-action@v2
+        uses: fjogeleit/http-request-action@v1
         with:
-          url: https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/stop
-          method: POST
-          headers: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
-          body: '{}'
-
+          url: 'https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/stop'
+          method: 'POST'
+          customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
+          data: '{}'
+      
       # Trigger Render deployment to restart the service (using Render API)
       - name: Trigger Render deployment
-        uses: peter-evans/http-request-action@v2
+        uses: fjogeleit/http-request-action@v1
         with:
-          url: https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys
-          method: POST
-          headers: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
-          body: '{}'
+          url: 'https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys'
+          method: 'POST'
+          customHeaders: '{"Authorization": "Bearer ${{ secrets.RENDER_API_KEY }}"}'
+          data: '{}'
