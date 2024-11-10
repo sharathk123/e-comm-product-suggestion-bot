@@ -2,6 +2,7 @@ langchain-astradb
 langchain
 langchain-community 
 langchain-groq
+langchain_openai
 datasets
 pypdf
 python-dotenv
