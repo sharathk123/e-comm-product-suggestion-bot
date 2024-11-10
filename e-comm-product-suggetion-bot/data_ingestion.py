@@ -110,21 +110,4 @@ def search_vector_store(vstore, query):
         logger.error(f"Error during vector store search: {e}")
         raise  # Re-raise exception after logging
 
-# Main execution logic
-def main():
-    try:
-        # Create the vector store and ingest data
-        vstore, insert_ids = data_ingestion()
 
-        # Perform a search on the vector store if documents were inserted
-        if insert_ids:
-            search_vector_store(vstore, "Can you tell me the low budget sound basshead?")
-        else:
-            logger.info("No documents were inserted.")
-    
-    except Exception as e:
-        logger.error(f"An error occurred during the execution: {e}")
-
-# Entry point for the script
-if __name__ == "__main__":
-    main()
