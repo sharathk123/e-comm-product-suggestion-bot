@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a Flask-based web application developed for an e-commerce company. The application enables users to chat with an AI bot that provides product suggestions. It utilizes a Retrieval-Augmented Generation (RAG) architecture and integrates various advanced technologies including AstraDB as a vector database, LangChain, Groq for llama model, and OpenAI.
+This project is a Flask-based web application developed for an e-commerce company. The application enables users to chat with an AI bot that provides product suggestions. It utilizes a Retrieval-Augmented Generation (RAG) architecture and integrates various advanced technologies including AstraDB as a vector database, LangChain, Groq for llama model, and OpenAI embedding.
 
 ## Table of Contents
 - [Requirements](#requirements)
